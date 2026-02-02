@@ -532,50 +532,44 @@
             box-shadow: 0 10px 30px rgba(255, 107, 157, 0.5);
         }
 
-        /* Cute Animals */
-        .cute-animal {
+        /* Hello Kitty Character - Bottom Left */
+        .hello-kitty {
             position: fixed;
-            font-size: 3rem;
+            bottom: 20px;
+            left: 20px;
+            font-size: 5rem;
             z-index: 100;
-            pointer-events: none;
-            animation: animalFloat 15s ease-in-out infinite;
-            filter: drop-shadow(0 5px 15px rgba(255, 158, 216, 0.5));
+            cursor: pointer;
+            animation: kittyBreathe 3s ease-in-out infinite;
+            filter: drop-shadow(0 8px 20px rgba(255, 107, 157, 0.4));
+            transition: transform 0.3s ease;
         }
 
-        .cute-animal.cat1 { top: 15%; left: 5%; animation-delay: 0s; }
-        .cute-animal.cat2 { top: 60%; right: 8%; animation-delay: 3s; }
-        .cute-animal.cat3 { bottom: 30%; left: 20%; animation-delay: 7s; }
-        .cute-animal.cat4 { top: 30%; right: 15%; animation-delay: 11s; }
-        .cute-animal.bear1 { top: 40%; left: 3%; animation-delay: 6s; }
-        .cute-animal.bear2 { bottom: 20%; right: 5%; animation-delay: 9s; }
-        .cute-animal.bear3 { top: 50%; right: 3%; animation-delay: 10s; }
-        .cute-animal.panda1 { top: 75%; left: 15%; animation-delay: 12s; }
-        .cute-animal.panda2 { top: 25%; right: 12%; animation-delay: 2s; }
-        .cute-animal.bunny1 { top: 70%; right: 20%; animation-delay: 4s; }
-        .cute-animal.bunny2 { bottom: 40%; left: 10%; animation-delay: 8s; }
-        .cute-animal.unicorn1 { top: 35%; left: 25%; animation-delay: 5s; }
-        .cute-animal.unicorn2 { bottom: 25%; right: 25%; animation-delay: 13s; }
-        .cute-animal.hamster1 { top: 55%; left: 12%; animation-delay: 14s; }
-        .cute-animal.penguin1 { bottom: 35%; right: 10%; animation-delay: 1s; }
-        .cute-animal.chick1 { top: 45%; right: 22%; animation-delay: 15s; }
+        .hello-kitty:hover {
+            transform: scale(1.2);
+        }
 
-        @keyframes animalFloat {
+        .hello-kitty:active {
+            transform: scale(0.9);
+        }
+
+        @keyframes kittyBreathe {
             0%, 100% {
-                transform: translate(0, 0) rotate(0deg);
-                opacity: 0.8;
-            }
-            25% {
-                transform: translate(30px, -30px) rotate(10deg);
-                opacity: 1;
+                transform: translateY(0) scale(1);
             }
             50% {
-                transform: translate(-20px, 20px) rotate(-10deg);
-                opacity: 0.9;
+                transform: translateY(-10px) scale(1.05);
             }
-            75% {
-                transform: translate(20px, 30px) rotate(5deg);
-                opacity: 1;
-            }
+        }
+
+        /* Blinking effect */
+        .hello-kitty.blink {
+            animation: kittyBlink 0.3s ease;
+        }
+
+        @keyframes kittyBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
 
         /* Floating hearts background */
@@ -645,8 +639,10 @@
                 font-size: 1rem;
             }
 
-            .cute-animal {
-                font-size: 2rem;
+            .hello-kitty {
+                font-size: 3.5rem;
+                bottom: 15px;
+                left: 15px;
             }
 
             .popup-title {
@@ -655,6 +651,14 @@
 
             .popup-message {
                 font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hello-kitty {
+                font-size: 2.5rem;
+                bottom: 10px;
+                left: 10px;
             }
         }
     </style>
@@ -687,24 +691,6 @@
         </p>
         <button class="popup-close-btn" onclick="closeLovePopup()">I Love You Too! ❤️</button>
     </div>
-
-    <!-- Cute Animals - More Characters! -->
-    <div class="cute-animal cat1">🐱</div>
-    <div class="cute-animal cat2">😺</div>
-    <div class="cute-animal cat3">😻</div>
-    <div class="cute-animal cat4">🐈</div>
-    <div class="cute-animal bear1">🧸</div>
-    <div class="cute-animal bear2">🐻</div>
-    <div class="cute-animal bear3">🐻‍❄️</div>
-    <div class="cute-animal panda1">🐼</div>
-    <div class="cute-animal panda2">🐼</div>
-    <div class="cute-animal bunny1">🐰</div>
-    <div class="cute-animal bunny2">🐇</div>
-    <div class="cute-animal unicorn1">🦄</div>
-    <div class="cute-animal unicorn2">🦄</div>
-    <div class="cute-animal hamster1">🐹</div>
-    <div class="cute-animal penguin1">🐧</div>
-    <div class="cute-animal chick1">🐥</div>
 
     <div class="header">
         <h1 class="logo">CARTIER</h1>
@@ -772,6 +758,9 @@
             <p style="margin-top: 2rem; color: #d4af37; font-size: 1.5rem;">Forever yours ❤️</p>
         </div>
     </div>
+
+    <!-- Hello Kitty Character -->
+    <div class="hello-kitty" id="helloKitty" title="Hello Kitty! 🎀">🐱</div>
 
     <div class="footer">
         CRAFTED WITH ❤️ | CARTIER COLLECTION 2026
@@ -878,14 +867,6 @@
                 const y = (e.clientY - window.innerHeight / 2) * speed;
                 item.style.transform = `translate(${x}px, ${y}px)`;
             });
-
-            // Parallax for cute animals
-            document.querySelectorAll('.cute-animal').forEach((animal, index) => {
-                const speed = 0.03 + (index * 0.005);
-                const x = (e.clientX - window.innerWidth / 2) * speed;
-                const y = (e.clientY - window.innerHeight / 2) * speed;
-                animal.style.transform = `translate(${x}px, ${y}px) rotate(${x * 0.1}deg)`;
-            });
         });
 
         // Smooth scroll reveal effect
@@ -944,46 +925,69 @@
         `;
         document.head.appendChild(style);
 
-        // Add cute animal bounce on hover
-        document.querySelectorAll('.cute-animal').forEach(animal => {
-            animal.style.cursor = 'pointer';
-            animal.style.pointerEvents = 'all';
-            animal.addEventListener('click', function() {
-                this.style.animation = 'none';
-                setTimeout(() => {
-                    this.style.animation = 'animalBounce 0.5s ease';
-                }, 10);
-                
-                // Create hearts
-                for (let i = 0; i < 5; i++) {
-                    const heart = document.createElement('div');
-                    heart.textContent = '💕';
-                    heart.style.position = 'fixed';
-                    heart.style.left = this.offsetLeft + 'px';
-                    heart.style.top = this.offsetTop + 'px';
-                    heart.style.fontSize = '1.5rem';
-                    heart.style.pointerEvents = 'none';
-                    heart.style.animation = `heartPop ${0.5 + Math.random()}s ease-out forwards`;
-                    heart.style.zIndex = '1001';
-                    document.body.appendChild(heart);
-                    setTimeout(() => heart.remove(), 1000);
+        // Hello Kitty interactions
+        const helloKitty = document.getElementById('helloKitty');
+        
+        // Add heart explosion animation
+        const explosionStyle = document.createElement('style');
+        explosionStyle.textContent = `
+            @keyframes heartExplode {
+                0% { 
+                    transform: translate(0, 0) scale(0) rotate(0deg); 
+                    opacity: 1; 
                 }
-            });
-        });
-
-        // Add animal bounce animation
-        const animalStyle = document.createElement('style');
-        animalStyle.textContent = `
-            @keyframes animalBounce {
-                0%, 100% { transform: scale(1) rotate(0deg); }
-                50% { transform: scale(1.5) rotate(15deg); }
-            }
-            @keyframes heartPop {
-                0% { transform: translate(0, 0) scale(0); opacity: 1; }
-                100% { transform: translate(${Math.random() * 100 - 50}px, -100px) scale(1); opacity: 0; }
+                100% { 
+                    transform: translate(var(--tx), var(--ty)) scale(1) rotate(360deg); 
+                    opacity: 0; 
+                }
             }
         `;
-        document.head.appendChild(animalStyle);
+        document.head.appendChild(explosionStyle);
+        
+        // Blink randomly
+        setInterval(() => {
+            if (Math.random() > 0.7) {
+                helloKitty.classList.add('blink');
+                setTimeout(() => {
+                    helloKitty.classList.remove('blink');
+                }, 300);
+            }
+        }, 3000);
+
+        // Click interaction - hearts explosion
+        helloKitty.addEventListener('click', function() {
+            const rect = this.getBoundingClientRect();
+            
+            // Create hearts explosion
+            for (let i = 0; i < 12; i++) {
+                const heart = document.createElement('div');
+                heart.textContent = ['💕', '💖', '💝', '❤️', '🎀'][Math.floor(Math.random() * 5)];
+                heart.style.position = 'fixed';
+                heart.style.left = rect.left + rect.width / 2 + 'px';
+                heart.style.top = rect.top + rect.height / 2 + 'px';
+                heart.style.fontSize = '2rem';
+                heart.style.pointerEvents = 'none';
+                heart.style.zIndex = '1001';
+                
+                const angle = (Math.PI * 2 * i) / 12;
+                const distance = 80 + Math.random() * 40;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                
+                heart.style.animation = `heartExplode 1.2s ease-out forwards`;
+                heart.style.setProperty('--tx', tx + 'px');
+                heart.style.setProperty('--ty', ty + 'px');
+                
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 1200);
+            }
+            
+            // Play cute sound effect (visual feedback)
+            this.style.transform = 'scale(0.8) rotate(10deg)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 200);
+        });
     </script>
 </body>
 </html>
